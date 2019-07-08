@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Blogs Your Uncle</title>
+        <h1>Blogs Your Uncle</h1>
+        <style>
+            .error {
+                color: red;
+            };
+            .form {
+                background-color: lightseagreen;
+                padding: 20px;
+                margin:0 auto;
+                width: 540px;
+                font: 16px san-serif;
+                border-radius: 10px;
+            };
+            textarea {
+                margin: 10px 0;
+                width: 540px;
+                height: 120px;
+            };
+        </style>
+    </head>
+<body>
+
+    <header>
+        <nav>
+            <ul>
+                <li><a href='/'>Home</a></li>
+                <li><a href="/blog">Your Blog Posts</a></li>
+                <li><a href="/newpost">New Entry</a></li>
+                <li><a href='/login'>login</a></li>
+                <li><a href='/signup'>Create Account</a></li>
+                <li><a href='/logout'>log out</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
