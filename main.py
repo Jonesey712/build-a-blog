@@ -25,7 +25,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120), unique=True)
     password = db.Column(db.String(120))
-    blog = db.relationship('Blog', backref='owner')
+    blogs = db.relationship('Blog', backref='owner')
 
     def __init__(self, username, password):
         self.username = username
@@ -36,6 +36,32 @@ def require_login():
     allowed_routes = ['login', 'register', 'blog', 'add_user', 'index']
     if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect('/login')
+def get_users():
+    return User.query.all()
+
+@app.route('/')
+def index():
+
+    return render_template('index.html', title="Blogz",users=get_users())
+
+@app.route('/blog', methods=['POST', 'GET'])
+def blog():
+    post_id = request.args.get('id')
+    single_user_id = request.args.get('owner_id')
+
+
+    if single_user_id:
+        #indiv_post = Blog.query.get(post_id)
+        owner = Owner_id.query.filter_by(username=single_user_id).first()
+        blogs = Blog.query.filter_by(owner_id=owner_id).order_by.desc()
+        return render_template('blog.html', title="Blogs " + blog_user, username=blog_user)
+    #else:
+        #if (single_user_id):
+            #indiv_user = Blog.query.filter_by(owner_id=owner_id).all()
+            #return render_template('blog.html', title="Blogs Your Uncle", blogs=blogs)
+    #else:    
+        #blogs = Blog.query.order_by(Blog.id).all()
+        #return render_template('blog.html', title='Blogz', blog=blog)
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -52,6 +78,7 @@ def login():
             flash('You seem to be missing some information or info is incorrect', 'error') 
             
     return render_template('login.html')
+
 
 @app.route('/signup', methods=['POST', 'GET'])
 def register():
@@ -108,28 +135,6 @@ def register():
     else:
         return render_template('signup.html')
 
-@app.route('/logout')
-def logout():
-    del session['username']
-    flash('You have been logged out. Come back soon')
-    return redirect('/blog')
-
-@app.route('/blog')
-def blog():
-    post_id = request.args.get('id')
-    single_user_id = request.args.get('owner_id')
-    if (post_id):
-        indiv_post = Blog.query.get(post_id)
-        return render_template('indiv_post.html', indiv_post=indiv_post)
-    else:
-        if (single_user_id):
-            indiv_user = Blog.query.filter_by(owner_id=single_user_id)
-            return render_template('singleUser.html', posts=indiv_user)
-        else:    
-            all_posts = Blog.query.all()
-            return render_template('blog.html', posts=all_posts)
-
-
 
 def val_empty(x):
     if x:
@@ -177,18 +182,11 @@ def add_entry():
     else:
         return render_template('addnewpost.html')
 
-
-@app.route('/')
-def index():
-    #owner = User.query.filter_by(user=session['username']).all()
-    #if request.method == 'POST':
-        #blog = request.form['blog']
-        #new_blog = Blog(newpost, owner)
-        #db.session.add(new_blog)
-        #db.session.commit()
-    all_users = User.query.distinct()
-    return render_template('index.html', list_all_users=all_users)
-
+@app.route('/logout')
+def logout():
+    del session['username']
+    flash('You have been logged out. Come back soon')
+    return redirect('/blog')
 
 if __name__ == '__main__':
     app.run()
