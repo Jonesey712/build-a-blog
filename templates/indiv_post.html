@@ -2,14 +2,12 @@
 
 {% block content %}
 
-<h1>My Posts</h1>
+<h1>Posts</h1>
     <div>
         
-        <h1>{{indiv_post.title}}</h1>
-        <p class="entry">{{indiv_post.post}}</p>
-        <p class="byline">Written by <a href="./blog?owner_id={{indiv_post.owner_id}}">{{indiv_post.owner.username}}</a></p>
-        <hr>
-       
+        <h2>{{indiv_post.title}}</h2>
+        <p >{{indiv_post.post}}</p>
+        <hr />
     </div>
 
 {% endblock %}

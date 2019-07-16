@@ -3,17 +3,14 @@
 {% block content %}
 
 <h1>Blog</h1>
-<div class="blogs">
-        {% if blog|length == 0 %}
-            <p>No posts yet! <a href="/newpost">Write one!</a></p>
-    
-        {% else %}
-            {% for post in blog %}
-                <h2><a href="/blog?id={{post.id}}">{{post.title}}</a></h2>
-                <p>{{post.content}}</p>
-                <p id="author">Written by <a href="blog?user={{post.owner.id}}">{{post.owner.username}}</a>.</p>
-            {% endfor %}
-        {% endif %}
+    <div>
+            {% for blog in blogs %}
+            <h2><a href="/blog?id={{blog.id}}">{{blog.title}}</a></h2>
+            <p>{{blog.post}}</p>
+            <hr />
+             {% endfor %}   
+           
+        
     </div>
 
 {% endblock %}
